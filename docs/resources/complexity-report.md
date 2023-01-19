@@ -9,7 +9,7 @@
 * Change cost: 7.653061224489796%
 * Core size: 100%
 
-## /home/runner/work/package-backend/package-backend/jest.config.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/jest.config.js
 
 * Physical LOC: 23
 * Logical LOC: 12
@@ -19,7 +19,7 @@
 * Maintainability index: 62.36361563140606
 * Dependency count: 0
 
-## /home/runner/work/package-backend/package-backend/jsdoc.conf.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/jsdoc.conf.js
 
 * Physical LOC: 14
 * Logical LOC: 4
@@ -39,7 +39,7 @@
     * Halstead volume: 19.651484454403228
     * Halstead effort: 39.302968908806456
 
-## /home/runner/work/package-backend/package-backend/src/cache.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/cache.js
 
 * Physical LOC: 28
 * Logical LOC: 3
@@ -49,7 +49,7 @@
 * Maintainability index: 78.8444767459975
 * Dependency count: 1
 
-## /home/runner/work/package-backend/package-backend/src/debug_utils.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/debug_utils.js
 
 * Physical LOC: 30
 * Logical LOC: 22
@@ -69,7 +69,7 @@
     * Halstead volume: 475.6861996976024
     * Halstead effort: 8970.082622869073
 
-## /home/runner/work/package-backend/package-backend/scripts/deprecated/search.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/scripts/deprecated/search.js
 
 * Physical LOC: 176
 * Logical LOC: 73
@@ -139,7 +139,7 @@
     * Halstead volume: 380.3296723500879
     * Halstead effort: 12318.455498894515
 
-## /home/runner/work/package-backend/package-backend/scripts/tools/genBadges.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/scripts/tools/genBadges.js
 
 * Physical LOC: 90
 * Logical LOC: 50
@@ -189,7 +189,7 @@
     * Halstead volume: 91.37651812938249
     * Halstead effort: 186.9065143555551
 
-## /home/runner/work/package-backend/package-backend/src/tests/config.test.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests/config.test.js
 
 * Physical LOC: 63
 * Logical LOC: 2
@@ -199,7 +199,7 @@
 * Maintainability index: 86.03073855173344
 * Dependency count: 1
 
-## /home/runner/work/package-backend/package-backend/src/tests/debug_utils.test.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests/debug_utils.test.js
 
 * Physical LOC: 31
 * Logical LOC: 2
@@ -209,7 +209,7 @@
 * Maintainability index: 86.03073855173344
 * Dependency count: 1
 
-## /home/runner/work/package-backend/package-backend/src/tests/logger.test.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests/logger.test.js
 
 * Physical LOC: 95
 * Logical LOC: 4
@@ -219,7 +219,7 @@
 * Maintainability index: 76.39879935103494
 * Dependency count: 1
 
-## /home/runner/work/package-backend/package-backend/src/tests/query.test.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests/query.test.js
 
 * Physical LOC: 143
 * Logical LOC: 78
@@ -229,7 +229,7 @@
 * Maintainability index: 37.68731830500316
 * Dependency count: 1
 
-## /home/runner/work/package-backend/package-backend/src/tests_integration/fixtures/git.createPackage_returns/valid_multi_version.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests_integration/fixtures/git.createPackage_returns/valid_multi_version.js
 
 * Physical LOC: 43
 * Logical LOC: 34
@@ -239,7 +239,7 @@
 * Maintainability index: 50.83192723928399
 * Dependency count: 0
 
-## /home/runner/work/package-backend/package-backend/src/tests_integration/fixtures/git.createPackage_returns/valid_one_version.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests_integration/fixtures/git.createPackage_returns/valid_one_version.js
 
 * Physical LOC: 25
 * Logical LOC: 19
@@ -249,7 +249,7 @@
 * Maintainability index: 58.378034894518755
 * Dependency count: 0
 
-## /home/runner/work/package-backend/package-backend/src/tests_integration/fixtures/lifetime/package-a.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests_integration/fixtures/lifetime/package-a.js
 
 * Physical LOC: 52
 * Logical LOC: 25
@@ -259,7 +259,7 @@
 * Maintainability index: 54.4848955157022
 * Dependency count: 0
 
-## /home/runner/work/package-backend/package-backend/src/tests_integration/fixtures/lifetime/user-a.js
+## /home/runner/work/atom-community-server-backend-JS/atom-community-server-backend-JS/src/tests_integration/fixtures/lifetime/user-a.js
 
 * Physical LOC: 9
 * Logical LOC: 6
