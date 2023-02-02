@@ -261,7 +261,6 @@ describe("Does NewPackageData Return as expected", () => {
     expect(res.ok).toBe(true);
     expect(res.content.name).toBe("pulsar");
     expect(res.content.creation_method).toBe("User Made Package");
-    expect(res.content.readme).toBe("This is a readme");
     expect(res.content.metadata.name).toBe("pulsar");
     expect(res.content.metadata.version).toBe(`v${ver}`);
     expect(res.content.metadata.repository).toBe("https://github.com/pulsar-edit/pulsar");
@@ -269,6 +268,7 @@ describe("Does NewPackageData Return as expected", () => {
     expect(res.content.repository.url).toBe("https://github.com/pulsar-edit/pulsar");
     expect(res.content.versions[ver]).toBeDefined();
     expect(res.content.versions[ver].name).toBe("pulsar");
+    expect(res.content.versions[ver].readme).toBe("This is a readme");
     expect(res.content.versions[ver].repository.type).toBe("git");
     expect(res.content.versions[ver].repository.url).toBe("https://github.com/pulsar-edit/pulsar");
     expect(res.content.versions[ver].metadata.tarball_url).toBe(`https://api.github.com/repos/pulsar-edit/pulsar/tarball/refs/tags/v${ver}`);
