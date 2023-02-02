@@ -109,7 +109,7 @@ async function packageNameAvailability(name) {
  * @async
  * @function insertNewPackage
  * @desc Insert a new package inside the DB taking a `Server Object Full` as argument.
- * @param {object} pack - The `Server Object Full` package.
+ * @param {object} pack - The object retrieved by VCS for the new package.
  * @returns {object} A Server Status Object.
  */
 async function insertNewPackage(pack) {
@@ -134,7 +134,7 @@ async function insertNewPackage(pack) {
         // TODO: data column deprecated; to be removed
         insertNewPack = await sqlTrans`
           INSERT INTO packages (name, creation_method, data, package_type)
-          VALUES (${pack.name}, ${pack.creation_method}, ${pack}, ${packageType})
+          VALUES (${pack.name}, ${pack.creation_method}, '{}', ${packageType})
           RETURNING pointer;
       `;
       } catch (e) {
@@ -173,17 +173,18 @@ async function insertNewPackage(pack) {
         // Since many packages don't define an engine field,
         // we will do it for them if not present,
         // following suit with what Atom internal packages do.
-        const engine = pv[ver].engines ?? defaultEngine;
+        const engine = pv[ver].metadata?.engines ?? defaultEngine;
 
         // It's common practice for packages to not specify license,
         // therefore set it as NONE if undefined.
-        const license = pv[ver].license ?? defaultLicense;
+        const license = pv[ver].metadata?.license ?? defaultLicense;
 
         let insertNewVersion = {};
         try {
           insertNewVersion = await sqlTrans`
-            INSERT INTO versions (package, status, semver, license, engine, meta)
-            VALUES (${pointer}, ${status}, ${ver}, ${license}, ${engine}, ${pv[ver]})
+            INSERT INTO versions (package, status, semver, license, engine, repo_url, repo_type, readme, meta)
+            VALUES (${pointer}, ${status}, ${ver}, ${license}, ${engine}, ${pv[ver].repository.url},
+              ${pv[ver].repository.type}, ${pv[ver].readme}, ${pv[ver].metadata})
             RETURNING id;
         `;
         } catch (e) {
@@ -218,15 +219,15 @@ async function insertNewPackage(pack) {
  * @async
  * @function insertNewPackageVersion
  * @desc Adds a new package version to the db.
- * @param {object} packJSON - A full `package.json` file for the wanted version.
+ * @param {object} pack - The package retrieved by VCS for the wanted version.
  * @param {string|null} oldName - If provided, the old name to be replaced for the renaming of the package.
  * @returns {object} A server status object.
  */
-async function insertNewPackageVersion(packJSON, oldName = null) {
+async function insertNewPackageVersion(pack, oldName = null) {
   sqlStorage ??= setupSQL();
 
   // We are expected to receive a standard `package.json` file.
-  // Note that, if oldName is provided, here we can be sure oldName !== packJSON.name
+  // Note that, if oldName is provided, here we can be sure oldName !== pack.name
   // because the comparison has been already done in postPackagesVersion()
   return await sqlStorage
     .begin(async (sqlTrans) => {
@@ -234,7 +235,7 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
 
       // On renaming, search the package pointer using the oldName,
       // otherwise use the name in the package object directly.
-      let packName = rename ? oldName : packJSON.name;
+      let packName = rename ? oldName : pack.name;
 
       const packID = await getPackageByNameSimple(packName);
 
@@ -252,12 +253,12 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
         try {
           updateNewName = await sqlTrans`
             UPDATE packages
-            SET name = ${packJSON.name}
+            SET name = ${pack.name}
             WHERE pointer = ${pointer}
             RETURNING name;
           `;
         } catch (e) {
-          throw `Unable to update the package name. ${packJSON.name} is already used by another package.`;
+          throw `Unable to update the package name. ${pack.name} is already used by another package.`;
         }
 
         if (!updateNewName?.count) {
@@ -270,19 +271,19 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
           newInsertedName = await sqlTrans`
             INSERT INTO names
             (name, pointer) VALUES
-            (${packJSON.name}, ${pointer})
+            (${pack.name}, ${pointer})
             RETURNING name;
           `;
         } catch (e) {
-          throw `Unable to add the new name: ${packJSON.name} is already used.`;
+          throw `Unable to add the new name: ${pack.name} is already used.`;
         }
 
         if (!newInsertedName?.count) {
-          throw `Unable to add the new name: ${packJSON.name}`;
+          throw `Unable to add the new name: ${pack.name}`;
         }
 
-        // After renaming, we can use packJSON.name as the package name.
-        packName = packJSON.name;
+        // After renaming, we can use pack.name as the package name.
+        packName = pack.name;
       }
 
       // We used to check if the new version was higher than the latest, but this is
@@ -292,15 +293,16 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
       // The only requirement is that the provided semver is not already present
       // in the database for the targeted package.
 
-      const license = packJSON.license ?? defaultLicense;
-      const engine = packJSON.engines ?? defaultEngine;
+      const license = pack.metadata?.license ?? defaultLicense;
+      const engine = pack.metadata?.engines ?? defaultEngine;
 
       let addVer = {};
       try {
         // TODO: status column deprecated; to be removed
         addVer = await sqlTrans`
-          INSERT INTO versions (package, status, semver, license, engine, meta)
-          VALUES(${pointer}, 'published', ${packJSON.version}, ${license}, ${engine}, ${packJSON})
+          INSERT INTO versions (package, status, semver, license, engine, repo_url, repo_type, readme, meta)
+          VALUES(${pointer}, 'published', ${pack.metadata.version}, ${license}, ${engine},
+          ${pv[ver].repository.url}, ${pv[ver].repository.type}, ${pv[ver].readme}, ${pack.metadata})
           RETURNING semver, status;
         `;
       } catch (e) {
@@ -314,7 +316,7 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
 
       return {
         ok: true,
-        content: `Successfully added new version: ${packName}@${packJSON.version}`,
+        content: `Successfully added new version: ${packName}@${pack.metadata.version}`,
       };
     })
     .catch((err) => {
@@ -322,7 +324,7 @@ async function insertNewPackageVersion(packJSON, oldName = null) {
         ? { ok: false, content: err, short: "Server Error" }
         : {
             ok: false,
-            content: `A generic error occured while inserting the new package version ${packJSON.name}`,
+            content: `A generic error occured while inserting the new package version ${pack.name}`,
             short: "Server Error",
             error: err,
           };

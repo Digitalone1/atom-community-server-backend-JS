@@ -792,7 +792,7 @@ async function postPackagesVersion(req, res) {
   // Now add the new Version key.
 
   const addVer = await database.insertNewPackageVersion(
-    packMetadata.content.metadata,
+    packMetadata.content,
     rename ? currentName : null
   );
 

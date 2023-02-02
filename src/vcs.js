@@ -190,12 +190,9 @@ async function newPackageData(userObj, ownerRepo, service) {
 
     newPack.name = packName;
     newPack.creation_method = "User Made Package";
-    newPack.readme = readme.content;
-    newPack.metadata = pack.content; // The metadata tag is the most recent package.json
 
-    // Then lets add the service used, so we are able to safely find it in the future
-    const packRepo = determineProvider(pack.content.repository)
-    newPack.repository = packRepo;
+    // Then lets save the service used, so we are able to safely find it in the future
+    const packRepo = determineProvider(pack.content.repository);
 
     // Now during migration packages will have a `versions` key, but otherwise
     // the standard package will just have `version`
