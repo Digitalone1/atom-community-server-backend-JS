@@ -64,6 +64,7 @@ CREATE TABLE stars (
 -- Create versions Table
 
 CREATE TYPE versionStatus AS ENUM('latest', 'published', 'removed');
+CREATE TYPE repository AS ENUM('git');
 
 CREATE TABLE versions (
     id SERIAL PRIMARY KEY,
@@ -74,6 +75,9 @@ CREATE TABLE versions (
     created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     engine JSONB NOT NULL,
+    repo_type repository NOT NULL DEFAULT 'git',
+    repo_url TEXT NOT NULL DEFAULT '',
+    readme TEXT NOT NULL DEFAULT '',
     meta JSONB,
     deleted BOOLEAN NOT NULL DEFAULT FALSE,
     -- generated columns

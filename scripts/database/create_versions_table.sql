@@ -3,6 +3,7 @@
 -- Credit: @Digitalone1
 
 CREATE TYPE versionStatus AS ENUM('latest', 'published', 'removed');
+CREATE TYPE repository AS ENUM('git');
 
 CREATE TABLE versions (
     id SERIAL PRIMARY KEY,
@@ -11,6 +12,9 @@ CREATE TABLE versions (
     semver VARCHAR(256) NOT NULL,
     license VARCHAR(128) NOT NULL,
     engine JSONB NOT NULL,
+    repo_type repository NOT NULL DEFAULT 'git',
+    repo_url TEXT NOT NULL DEFAULT '',
+    readme TEXT NOT NULL DEFAULT '',
     created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     meta JSONB,
