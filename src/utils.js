@@ -91,10 +91,13 @@ async function constructPackageObjectFull(pack) {
 async function constructPackageObjectShort(pack) {
   const parsePackageObject = (p) => {
     return {
-      ...p.data,
+      name: p.name,
+      repository: p.repository,
       downloads: p.downloads,
       stargazers_count: p.stargazers_count,
       releases: { latest: p.semver },
+      readme: p.readme,
+      metadata: p.data
     };
   };
 

@@ -135,7 +135,11 @@ describe("Get /api/packages", () => {
       // PostgreSQL numeric types are not fully compatible with js Number type
       expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
       expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
       expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
     }
   });
   test("Should respond with an array not containing sensible data", async () => {
@@ -267,7 +271,11 @@ describe("GET /api/packages/featured", () => {
       // PostgreSQL numeric types are not fully compatible with js Number type
       expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
       expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
       expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
     }
   });
   test("Does Not Return Sensible Data", async () => {
@@ -295,7 +303,11 @@ describe("GET /api/packages/search", () => {
       // PostgreSQL numeric types are not fully compatible with js Number type
       expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
       expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
       expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
     }
   });
   test("Valid Search Does Not Return Sensible Data", async () => {
@@ -742,6 +754,20 @@ describe("GET /api/themes/featured", () => {
     const res = await request(app).get("/api/themes/featured");
     expect(res.body).toBeArray();
   });
+  test("Returns Valid Data", async () => {
+    const res = await request(app).get("/api/themes/featured");
+    for (const p of res.body) {
+      expect(typeof p.name === "string").toBeTruthy();
+      // PostgreSQL numeric types are not fully compatible with js Number type
+      expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
+      expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
+    }
+  });
 });
 
 describe("GET /api/themes", () => {
@@ -761,7 +787,11 @@ describe("GET /api/themes", () => {
       // PostgreSQL numeric types are not fully compatible with js Number type
       expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
       expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
       expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
     }
   });
   test("Should respond with an array not containing sensible data", async () => {
@@ -802,9 +832,14 @@ describe("GET /api/themes/search", () => {
     const res = await request(app).get("/api/themes/search?q=syntax");
     for (const p of res.body) {
       expect(typeof p.name === "string").toBeTruthy();
+      // PostgreSQL numeric types are not fully compatible with js Number type
       expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
       expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+      expect(typeof p.readme === "string").toBeTruthy();
+      expect(typeof p.repository.type === "string").toBeTruthy();
+      expect(typeof p.repository.url === "string").toBeTruthy();
       expect(typeof p.releases.latest === "string").toBeTruthy();
+      expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
     }
   });
   test("Valid Search Returns Expected Headers", async () => {
