@@ -263,7 +263,7 @@ async function createPackage(repo, user) {
       // They match tag and version, stuff the data into the package.
       // Copy pack so we avoid to append tarball info to the same object
       const versionMetadata = await metadataAppendTarballInfo(
-        structuredClone(pack),
+        pack,
         tag,
         user
       );

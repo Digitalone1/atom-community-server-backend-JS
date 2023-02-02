@@ -241,12 +241,12 @@ async function newPackageData(userObj, ownerRepo, service) {
         continue;
       }
 
-      // The package metadata object should be cloned for every version, otherwise we end up
-      // overwriting the tarball info for all previous versions.
-      let packVersionMetadata = structuredClone(pack.content);
-      // Append metadata info to new object.
-      packVersionMetadata.tarball_url = tag.tarball_url;
-      packVersionMetadata.sha = typeof tag.commit?.sha === "string" ? tag.commit.sha : "";
+      // Construct metadata and append tarball info.
+      const packVersionMetadata = {
+        ...pack.content,
+        tarball_url: tag.tarball_url,
+        sha: typeof tag.commit?.sha === "string" ? tag.commit.sha : "",
+      };
 
       newPack.versions[ver] = constructPackageVersionMetadata(
         packName,
