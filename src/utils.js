@@ -50,27 +50,37 @@ async function constructPackageObjectFull(pack) {
     let retVer = {};
 
     for (const v of vers) {
-      retVer[v.semver] = v.meta;
-      retVer[v.semver].license = v.license;
-      retVer[v.semver].engine = v.engine;
-      retVer[v.semver].dist = {
-        tarball: `${server_url}/api/packages/${pack.name}/versions/${v.semver}/tarball`,
+      retVer[v.semver] = {
+        ...v.meta,
+        repository: v.repo_url,
+        license: v.license,
+        engines: v.engine,
+        dist: {
+          tarball: `${server_url}/api/packages/${pack.name}/versions/${v.semver}/tarball`,
+        }
       };
     }
 
     return retVer;
   };
 
-  // We need to copy the metadata of the latest version in order to avoid an
-  // auto-reference in the versions array that leads to a freeze in JSON stringify stage.
-  let newPack = structuredClone(pack?.versions[0]?.meta ?? {});
-  newPack.name = pack.name;
-  newPack.downloads = pack.downloads;
-  newPack.stargazers_count = pack.stargazers_count;
-  newPack.versions = parseVersions(pack.versions);
   // database.getPackageByName() sorts the JSON array versions in descending order,
   // so no need to find the latest semver, it's the first one (index 0).
-  newPack.releases = { latest: pack?.versions[0]?.semver ?? "" };
+  const newPack = {
+    name: pack.name,
+    repository: {
+      type: pack?.versions[0]?.repo_type ?? "",
+      url: pack?.versions[0]?.repo_url ?? "",
+    },
+    downloads: pack.downloads,
+    stargazers_count: pack.stargazers_count,
+    releases: {
+      latest: pack?.versions[0]?.semver ?? ""
+    },
+    versions: parseVersions(pack.versions),
+    readme: pack?.versions[0]?.readme ?? "",
+    metadata: pack?.versions[0]?.meta ?? {},
+  }
 
   logger.generic(6, "Built Package Object Full without Error");
 

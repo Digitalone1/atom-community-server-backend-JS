@@ -371,14 +371,25 @@ describe("GET /api/packages/:packageName", () => {
   });
   test("Valid package contains valid data", async () => {
     const res = await request(app).get("/api/packages/language-css");
+    const p = res.body;
+    expect(typeof p.name === "string").toBeTruthy();
     // PostgreSQL numeric types are not fully compatible with js Number type
-    expect(`${res.body.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
-    expect(`${res.body.downloads}`.match(/^\d+$/) === null).toBeFalsy();
-    expect(typeof res.body.releases.latest === "string").toBeTruthy();
-    for (const v of Object.keys(res.body.versions)) {
-      expect(typeof res.body.versions[v].license === "string").toBeTruthy();
+    expect(`${p.stargazers_count}`.match(/^\d+$/) === null).toBeFalsy();
+    expect(`${p.downloads}`.match(/^\d+$/) === null).toBeFalsy();
+    expect(typeof p.repository.type === "string").toBeTruthy();
+    expect(typeof p.repository.url === "string").toBeTruthy();
+    expect(typeof p.releases.latest === "string").toBeTruthy();
+    expect(typeof p.readme === "string").toBeTruthy();
+    expect(p.metadata !== null && typeof p.metadata === "object").toBeTruthy();
+    expect(typeof p.metadata.name === "string").toBeTruthy();
+    for (const v of Object.keys(p.versions)) {
+      expect(typeof p.versions[v].license === "string").toBeTruthy();
+      expect(typeof p.versions[v].repository === "string").toBeTruthy();
       expect(
-        typeof res.body.versions[v].dist.tarball === "string"
+        typeof p.versions[v].engines !== null && typeof p.versions[v].engines === "object"
+      ).toBeTruthy();
+      expect(
+        typeof p.versions[v].dist.tarball === "string"
       ).toBeTruthy();
     }
   });

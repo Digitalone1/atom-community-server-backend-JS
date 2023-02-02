@@ -475,7 +475,9 @@ async function getPackageByName(name, user = false) {
               user
                 ? sqlStorage``
                 : sqlStorage`'id', v.id, 'package', v.package,`
-            } 'semver', v.semver, 'license', v.license, 'engine', v.engine, 'meta', v.meta
+            }
+            'repo_type', v.repo_type, 'repo_url', v.repo_url, 'readme', v.readme,
+            'semver', v.semver, 'license', v.license, 'engine', v.engine, 'meta', v.meta
           )
           ORDER BY v.semver_v1 DESC, v.semver_v2 DESC, v.semver_v3 DESC, v.created DESC
         ) AS versions
