@@ -63,8 +63,7 @@ async function constructPackageObjectFull(pack) {
 
   // We need to copy the metadata of the latest version in order to avoid an
   // auto-reference in the versions array that leads to a freeze in JSON stringify stage.
-  //let newPack = structuredClone(pack?.versions[0]?.meta ?? {});
-  let newPack = pack.data;
+  let newPack = structuredClone(pack?.versions[0]?.meta ?? {});
   newPack.name = pack.name;
   newPack.downloads = pack.downloads;
   newPack.stargazers_count = pack.stargazers_count;
